@@ -28,11 +28,13 @@ namespace photoGallery
             // Configure validation logic for passwords
             manager.PasswordValidator = new PasswordValidator
             {
-                RequiredLength = 6,
-                RequireNonLetterOrDigit = true,
-                RequireDigit = true,
-                RequireLowercase = true,
-                RequireUppercase = true,
+                RequiredLength = 6, //密碼長度
+                RequireNonLetterOrDigit = false, //password requires a non-letter or digit character;
+                //https://docs.microsoft.com/en-us/previous-versions/aspnet/mt151568(v%3Dvs.108)
+                //https://docs.microsoft.com/en-us/previous-versions/aspnet/dn613295(v%3Dvs.108)
+                RequireDigit = false,
+                RequireLowercase = false,
+                RequireUppercase = false,
             };
             // Register two factor authentication providers. This application uses Phone and Emails as a step of receiving a code for verifying the user
             // You can write your own provider and plug in here.
