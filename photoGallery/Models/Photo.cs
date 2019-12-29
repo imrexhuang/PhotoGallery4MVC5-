@@ -13,8 +13,6 @@ namespace photoGallery.Models
         [Key]
         public int ID { get; set; }
         
-        [Required(ErrorMessage = "An Album Title is required")]
-        [StringLength(50, MinimumLength = 3, ErrorMessage = "Title must be between 3 and 50 characters!")]
         public string Title{get;set;}
 
         [ScaffoldColumn(false)]
@@ -41,9 +39,9 @@ namespace photoGallery.Models
         public int AlbumId { get; set; }
         public virtual Album Album { get; set; }
 
-        //https://www.c-sharpcorner.com/article/uploading-multiple-files-in-asp-net-mvc/
-        [Required(ErrorMessage = "Please select file.")]
         [Display(Name = "Browse File")]
+        [ScaffoldColumn(false)]
+        [NotMapped]
         public HttpPostedFileBase[] files { get; set; }
 
     }

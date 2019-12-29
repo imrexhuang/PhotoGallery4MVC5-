@@ -90,7 +90,6 @@ namespace photoGallery.Controllers
                                 sw.Write(data, 0, data.Length);
                             }
 
-                            ViewBag.UploadStatus = files.Count().ToString() + " files uploaded successfully.";
                         }
                         photo.Title = "";
                         photo.ImageName = filename;
@@ -101,7 +100,7 @@ namespace photoGallery.Controllers
                         TempData["Message"] = "<div class='alert alert-success'><a href='#' class='close' data-dismiss='alert'>&times;</a><strong>Success!</strong> Successfully Save.</div> ";
                     }
 
-
+                    ViewBag.UploadStatus = files.Count().ToString() + " files uploaded successfully.";
                 }
                 catch (Exception ex)
                 {
@@ -197,7 +196,11 @@ namespace photoGallery.Controllers
                 if (directoryExists(path))
                 {
 
-                    System.IO.File.Delete(filename);
+                    if (System.IO.File.Exists(filename))
+                    {
+                        System.IO.File.Delete(filename);
+                    }
+                        
                     db.Photos.Remove(photo);
                     db.SaveChanges();
                     TempData["Message"] = "<div class='alert alert-success'><a href='#' class='close' data-dismiss='alert'>&times;</a><strong>Success!</strong> Successfully deleted.</div> ";

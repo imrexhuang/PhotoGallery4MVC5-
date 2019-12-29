@@ -276,11 +276,6 @@
     <Content Include="Views\Account\ResetPassword.cshtml" />
     <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\tests\Create.cshtml" />
-    <Content Include="Views\tests\Delete.cshtml" />
-    <Content Include="Views\tests\Details.cshtml" />
-    <Content Include="Views\tests\Edit.cshtml" />
-    <Content Include="Views\tests\Index.cshtml" />
     <Content Include="Views\Albums\Create.cshtml" />
     <Content Include="Views\Albums\Delete.cshtml" />
     <Content Include="Views\Albums\Details.cshtml" />
