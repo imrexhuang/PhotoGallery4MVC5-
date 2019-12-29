@@ -40,5 +40,11 @@ namespace photoGallery.Models
 
         public int AlbumId { get; set; }
         public virtual Album Album { get; set; }
+
+        //https://www.c-sharpcorner.com/article/uploading-multiple-files-in-asp-net-mvc/
+        [Required(ErrorMessage = "Please select file.")]
+        [Display(Name = "Browse File")]
+        public HttpPostedFileBase[] files { get; set; }
+
     }
 }

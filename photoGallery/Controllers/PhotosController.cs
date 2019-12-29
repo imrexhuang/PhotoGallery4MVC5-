@@ -62,7 +62,7 @@ namespace photoGallery.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Title,AlbumId")] Photo photo, HttpPostedFileBase file)
+        public ActionResult Create([Bind(Include = "ID,AlbumId")] Photo photo, HttpPostedFileBase[] files)
         {
             if (ModelState.IsValid)
             {
@@ -70,29 +70,38 @@ namespace photoGallery.Controllers
                 {
                     TempData["Message"] = "";
                     var filename = "";
-                    if (file != null && file.ContentLength > 0)
+
+                    foreach (HttpPostedFileBase file in files)
                     {
-                        Guid gid;
-                        gid = Guid.NewGuid();
-                        var extension = Path.GetExtension(file.FileName);
-                        filename = gid + extension;
-
-                        var path = Path.Combine(Server.MapPath("~/Content/PhotoGallery/" + setAlbumName(photo.AlbumId)), filename);
-
-                        var data = new byte[file.ContentLength];
-                        file.InputStream.Read(data, 0, file.ContentLength);
-
-                        using (var sw = new FileStream(path, FileMode.Create))
+                        if (file != null && file.ContentLength > 0)
                         {
-                            sw.Write(data, 0, data.Length);
+                            Guid gid;
+                            gid = Guid.NewGuid();
+                            var extension = Path.GetExtension(file.FileName);
+                            filename = gid + extension;
+
+                            var path = Path.Combine(Server.MapPath("~/Content/PhotoGallery/" + setAlbumName(photo.AlbumId)), filename);
+
+                            var data = new byte[file.ContentLength];
+                            file.InputStream.Read(data, 0, file.ContentLength);
+
+                            using (var sw = new FileStream(path, FileMode.Create))
+                            {
+                                sw.Write(data, 0, data.Length);
+                            }
+
+                            ViewBag.UploadStatus = files.Count().ToString() + " files uploaded successfully.";
                         }
+                        photo.Title = "";
+                        photo.ImageName = filename;
+                        photo.InsertedDateTime = DateTime.Now;
+                        photo.InsertedBy = User.Identity.Name;
+                        db.Photos.Add(photo);
+                        db.SaveChanges();
+                        TempData["Message"] = "<div class='alert alert-success'><a href='#' class='close' data-dismiss='alert'>&times;</a><strong>Success!</strong> Successfully Save.</div> ";
                     }
-                    photo.ImageName = filename;
-                    photo.InsertedDateTime = DateTime.Now;
-                    photo.InsertedBy = User.Identity.Name;
-                    db.Photos.Add(photo);
-                    db.SaveChanges();
-                    TempData["Message"] = "<div class='alert alert-success'><a href='#' class='close' data-dismiss='alert'>&times;</a><strong>Success!</strong> Successfully Save.</div> ";
+
+
                 }
                 catch (Exception ex)
                 {
