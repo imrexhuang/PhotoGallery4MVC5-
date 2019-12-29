@@ -101,9 +101,16 @@ namespace photoGallery.Controllers
                 string Tofol = album.AlbumName;
                 if (directoryExists(path + Fromfol))
                 {
-                    Directory.Move(path + Fromfol, path + Tofol);
-                    db.SaveChanges();
-                    TempData["Message"] = "<div class='alert alert-success'><a href='#' class='close' data-dismiss='alert'>&times;</a><strong>Success!</strong> Successfully renamed.</div> ";
+                    if (!Fromfol.Equals(Tofol))
+                    {
+                        Directory.Move(path + Fromfol, path + Tofol);
+                        db.SaveChanges();
+                        TempData["Message"] = "<div class='alert alert-success'><a href='#' class='close' data-dismiss='alert'>&times;</a><strong>Success!</strong> Successfully renamed.</div> ";
+                    }
+                    else
+                    {
+                        TempData["Message"] = "<div class='alert alert-success'><a href='#' class='close' data-dismiss='alert'>&times;</a><strong>Success!</strong> Nothing changed.</div> ";
+                    }
                 }
                 else {
                     TempData["Message"] = "<div class='alert alert-danger'><a href='#' class='close' data-dismiss='alert'>&times; Directory</a><strong> " + Fromfol + "</strong> Not found.</div>";
