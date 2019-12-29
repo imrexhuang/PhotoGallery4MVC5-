@@ -70,34 +70,60 @@ namespace photoGallery.Controllers
                 {
                     TempData["Message"] = "";
                     var filename = "";
+                    string[] validFileTypes = { "jpg", "png", "gif" }; //可上傳之副檔名
 
                     foreach (HttpPostedFileBase file in files)
                     {
-                        if (file != null && file.ContentLength > 0)
+                        bool isValidFile = false;
+
+                        if (file != null && file.ContentLength == 0)
+                        {
+                            TempData["Message"] = "<div class='alert alert-danger'>【" + file.FileName + "】 <strong>file size is 0!</strong></div>";
+                            return RedirectToAction("Index");
+                        }
+                        else if (file != null && file.ContentLength > 0)
                         {
                             Guid gid;
                             gid = Guid.NewGuid();
                             var extension = Path.GetExtension(file.FileName);
                             filename = gid + extension;
 
-                            var path = Path.Combine(Server.MapPath("~/Content/PhotoGallery/" + setAlbumName(photo.AlbumId)), filename);
-
-                            var data = new byte[file.ContentLength];
-                            file.InputStream.Read(data, 0, file.ContentLength);
-
-                            using (var sw = new FileStream(path, FileMode.Create))
+                            for (int i = 0; i < validFileTypes.Length; i++)
                             {
-                                sw.Write(data, 0, data.Length);
+                                if (extension == "." + validFileTypes[i])
+                                {
+                                    isValidFile = true;
+                                    break;
+                                }
+                            }
+
+                            if (isValidFile != true)
+                            {
+                                TempData["Message"] = "<div class='alert alert-danger'>【" + file.FileName + "】 is <strong>invalid file type!</strong></div>";
+                                return RedirectToAction("Index");
+                            }
+                            else {
+                                var path = Path.Combine(Server.MapPath("~/Content/PhotoGallery/" + setAlbumName(photo.AlbumId)), filename);
+
+                                var data = new byte[file.ContentLength];
+                                file.InputStream.Read(data, 0, file.ContentLength);
+
+                                using (var sw = new FileStream(path, FileMode.Create))
+                                {
+                                    sw.Write(data, 0, data.Length);
+                                }
+
+                                photo.Title = "";
+                                photo.ImageName = filename;
+                                photo.InsertedDateTime = DateTime.Now;
+                                photo.InsertedBy = User.Identity.Name;
+                                db.Photos.Add(photo);
+                                db.SaveChanges();
+                                TempData["Message"] = "<div class='alert alert-success'><a href='#' class='close' data-dismiss='alert'>&times;</a><strong>Success!</strong> Successfully Save.</div> ";
                             }
 
                         }
-                        photo.Title = "";
-                        photo.ImageName = filename;
-                        photo.InsertedDateTime = DateTime.Now;
-                        photo.InsertedBy = User.Identity.Name;
-                        db.Photos.Add(photo);
-                        db.SaveChanges();
-                        TempData["Message"] = "<div class='alert alert-success'><a href='#' class='close' data-dismiss='alert'>&times;</a><strong>Success!</strong> Successfully Save.</div> ";
+
                     }
 
                     ViewBag.UploadStatus = files.Count().ToString() + " files uploaded successfully.";
@@ -105,7 +131,7 @@ namespace photoGallery.Controllers
                 catch (Exception ex)
                 {
 
-                    TempData["Message"] = "<div class='alert alert-danger'><a href='#' class='close' data-dismiss='alert'>&times; Directory</a><strong> " + ex.ToString() + "</strong> Not found.</div>";
+                    TempData["Message"] = "<div class='alert alert-danger'><a href='#' class='close' data-dismiss='alert'>&times; Directory</a><strong> " + ex.ToString() + "</strong> Not found!</div>";
                 }
                 return RedirectToAction("Index");
             }
