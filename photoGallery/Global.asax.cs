@@ -16,8 +16,7 @@ namespace photoGallery
         {
             AreaRegistration.RegisterAllAreas();            
             //System.Data.Entity.Database.SetInitializer<GalleryContext>(new photoGallery.Models.SampleData());
-            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<GalleryContext>());
-           // Database.SetInitializer<GalleryContext>(null);
+            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<GalleryContext>()); //DB First方式佈署時請註解掉
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
