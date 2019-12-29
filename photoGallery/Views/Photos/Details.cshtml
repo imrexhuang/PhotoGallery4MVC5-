@@ -19,6 +19,14 @@
         </dd>
 
         <dt>
+            @Html.DisplayNameFor(model => model.ID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ID)
+        </dd>
+
+        <dt>
             @Html.DisplayNameFor(model => model.Title)
         </dt>
 
@@ -26,9 +34,17 @@
             @Html.DisplayFor(model => model.Title)
         </dd>
 
+        <dt>
+            Image Preview
+        </dt>
+
+        <dd>
+            <img src="@(Url.Content("~/Content/PhotoGallery/" + @Html.DisplayFor(model => model.Album.AlbumName) + "/" + @Html.DisplayFor(model => model.ImageName) ))" class="img-responsive" />
+        </dd>
     </dl>
 </div>
+ 
 <p>
-    
-    @photoGallery.Utility.Utility4photoGallery.bootstrapActionLink(null, "Back to List", "Back to List", "Index", "Photos", "glyphicon-backward", null, null)
+
+    @photoGallery.Utility.Utility4photoGallery.bootstrapActionLink(null, "Back to Manage Photo", "Back to Manage Photo", "Manage", "Photos", "glyphicon-backward", null, null)
 </p>
