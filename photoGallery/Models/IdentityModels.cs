@@ -15,6 +15,12 @@ namespace photoGallery.Models
             // Add custom user claims here
             return userIdentity;
         }
+		
+        public ClaimsIdentity GenerateUserIdentity(UserManager<ApplicationUser> manager)
+        {
+            var userIdentity =  manager.CreateIdentity(this, DefaultAuthenticationTypes.ApplicationCookie);
+            return userIdentity;
+        }		
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
