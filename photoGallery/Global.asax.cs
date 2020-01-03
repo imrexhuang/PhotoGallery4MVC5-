@@ -24,7 +24,7 @@ namespace photoGallery
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             // https://stack247.wordpress.com/2013/02/22/antiforgerytoken-a-claim-of-type-nameidentifier-or-identityprovider-was-not-present-on-provided-claimsidentity/ 
-            AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.Email;
+            //AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.Email;
         }
     }
 }
