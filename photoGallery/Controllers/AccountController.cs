@@ -61,6 +61,13 @@ namespace photoGallery.Controllers
                 if (user != null)
                 {
                     await SignInAsync(user, model.RememberMe);
+                    var userRolesList = await UserManager.GetRolesAsync(user.Id);
+                    foreach (var userRole in userRolesList)
+                    {
+                        await UserManager.AddToRoleAsync(user.Id, userRole);
+                    }
+                    
+
                     return RedirectToLocal(returnUrl);
                 }
                 else
