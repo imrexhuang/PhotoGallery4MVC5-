@@ -30,6 +30,8 @@ namespace photoGallery.Controllers
             photos = photos.Where(c => c.AlbumId == albamId);
             return View("PhotoIndex",photos.ToList());
         }
+
+        [Authorize(Roles = "Admin,User")]
         public ActionResult Manage()
         {
             var photos = db.Photos.Include(p => p.Album);
@@ -51,6 +53,7 @@ namespace photoGallery.Controllers
         }
 
         // GET: Photos/Create
+        [Authorize(Roles = "Admin,User")]
         public ActionResult Create()
         {
             ViewBag.AlbumId = new SelectList(db.ImageGalleries, "ID", "AlbumName");
@@ -62,6 +65,7 @@ namespace photoGallery.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,User")]
         public ActionResult Create([Bind(Include = "ID,AlbumId")] Photo photo, HttpPostedFileBase[] files)
         {
             if (ModelState.IsValid)
@@ -141,6 +145,7 @@ namespace photoGallery.Controllers
         }
 
         // GET: Photos/Edit/5
+        [Authorize(Roles = "Admin,User")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -161,6 +166,7 @@ namespace photoGallery.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,User")]
         public ActionResult Edit([Bind(Include = "ID,Title,AlbumId")] Photo photo)
         {
             if (ModelState.IsValid)
@@ -195,6 +201,7 @@ namespace photoGallery.Controllers
         }
 
         // GET: Photos/Delete/5
+        [Authorize(Roles = "Admin,User")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -212,6 +219,7 @@ namespace photoGallery.Controllers
         // POST: Photos/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,User")]
         public ActionResult DeleteConfirmed(int id)
         {
             try
