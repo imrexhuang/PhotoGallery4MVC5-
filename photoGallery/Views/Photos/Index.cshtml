@@ -6,8 +6,8 @@
 
 @Html.Raw(TempData["Message"])
 <p>
-    @photoGallery.Utility.Utility4photoGallery.bootstrapActionLink(null, "Add Photo", "Add Photo", "Create", "Photos", "glyphicon-plus", null, null)
-    @photoGallery.Utility.Utility4photoGallery.bootstrapActionLink(null, "Manage Photo", "Manage Photo", "Manage", "Photos", "glyphicon-plus", null, null)
+    @photoGallery.Utility.Utility4photoGallery.bootstrapActionLinkAuthorized(null, "Add Photo", "Add Photo", "Create", "Photos", "glyphicon-plus", "Admin,User", null, null)
+    @photoGallery.Utility.Utility4photoGallery.bootstrapActionLinkAuthorized(null, "Manage Photo", "Manage Photo", "Manage", "Photos", "glyphicon-plus", "Admin,User", null, null)
 </p>
 
 
