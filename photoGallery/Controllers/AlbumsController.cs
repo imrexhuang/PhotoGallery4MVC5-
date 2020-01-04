@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using photoGallery.Models;
 using System.IO;
+using System.Web.Security;
 
 namespace photoGallery.Controllers
 {
@@ -37,6 +38,7 @@ namespace photoGallery.Controllers
         }
 
         // GET: Albums/Create
+        [Authorize(Roles = "Admin,User")]
         public ActionResult Create()
         {
             return View();
@@ -47,6 +49,7 @@ namespace photoGallery.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,User")]
         public ActionResult Create([Bind(Include = "ID,AlbumName,InsertedDateTime,LastUpdatedDatetime,InsertedBy,LastUpdatedBy")] Album album)
         {
             if (ModelState.IsValid)
@@ -66,6 +69,7 @@ namespace photoGallery.Controllers
         }
 
         // GET: Albums/Edit/5
+        [Authorize(Roles = "Admin,User")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -85,6 +89,7 @@ namespace photoGallery.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,User")]
         public ActionResult Edit([Bind(Include = "ID,AlbumName,InsertedDateTime,LastUpdatedDatetime,InsertedBy,LastUpdatedBy")] Album album)
         {
             if (ModelState.IsValid)
@@ -121,6 +126,7 @@ namespace photoGallery.Controllers
         }
 
         // GET: Albums/Delete/5
+        [Authorize(Roles = "Admin,User")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -139,6 +145,7 @@ namespace photoGallery.Controllers
         // POST: Albums/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,User")]
         public ActionResult DeleteConfirmed(int id)
         {
             TempData["Message"] = "";
