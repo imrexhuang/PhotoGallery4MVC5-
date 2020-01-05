@@ -16,4 +16,4 @@ The front end interface enables you to filter through your albums and preview yo
 
 ![image description](UI2.png)
 
-![image description](ui3.png)
+![image description](UI3.png)
