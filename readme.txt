@@ -11,3 +11,9 @@ The front end interface enables you to filter through your albums and preview yo
 - Supports pagination
 -- Based on the bootstrap CSS framework
 - Very clean application code that could be extended to your needs.
+
+![image description](UI1.png)
+
+![image description](UI2.png)
+
+![image description](ui3.png)
