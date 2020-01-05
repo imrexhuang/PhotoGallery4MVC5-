@@ -37,6 +37,10 @@ namespace photoGallery
             
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 
+            // https://dotblogs.com.tw/brooke/2019/04/10/113200
+            //增加角色的OwinContext
+            app.CreatePerOwinContext<ApplicationRoleManager>(ApplicationRoleManager.Create);
+
             // Uncomment the following lines to enable logging in with third party login providers
             //app.UseMicrosoftAccountAuthentication(
             //    clientId: "",

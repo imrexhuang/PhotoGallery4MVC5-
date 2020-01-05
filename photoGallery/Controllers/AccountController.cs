@@ -97,11 +97,37 @@ namespace photoGallery.Controllers
         {
             if (ModelState.IsValid)
             {
+                TempData["Message"] = "";
+
                 var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
-                IdentityResult result = await UserManager.CreateAsync(user, model.Password);
+                //user.Roles.Add("User");
+                IdentityResult result = await UserManager.CreateAsync(user, model.Password); //建立使用者
+
                 if (result.Succeeded)
-                {
-                    await SignInAsync(user, isPersistent: false);
+                {                  
+                    //await SignInAsync(user, isPersistent: false); //註解掉，註冊帳號後不自動登入
+
+                    // https://dotblogs.com.tw/brooke/2019/04/10/113200
+                    //新帳號預設角色名稱
+                    var roleName = "User";
+
+                    //判斷角色是否存在
+                    if (HttpContext.GetOwinContext().Get<ApplicationRoleManager>().RoleExists(roleName) == false)
+                    {
+                        //角色不存在,建立角色
+                        var role = new Microsoft.AspNet.Identity.EntityFramework.IdentityRole(roleName);
+                        role.Id = "2";
+                        await HttpContext.GetOwinContext().Get<ApplicationRoleManager>().CreateAsync(role);
+                    }
+                    else if (HttpContext.GetOwinContext().Get<ApplicationRoleManager>().RoleExists("Admin") == false)
+                    {
+                        var role = new Microsoft.AspNet.Identity.EntityFramework.IdentityRole("Admin");
+                        role.Id = "1";
+                        await HttpContext.GetOwinContext().Get<ApplicationRoleManager>().CreateAsync(role);
+                    }
+
+                    //將使用者加入該角色
+                    await UserManager.AddToRoleAsync(user.Id, roleName);
 
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
@@ -109,10 +135,13 @@ namespace photoGallery.Controllers
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    return RedirectToAction("Index", "Home");
+                    TempData["Message"] = "Account successfully created!";
+                    //return RedirectToAction("Index", "Home");
+                    return View();
                 }
                 else
                 {
+                    TempData["Message"] = "Account creation failed!";
                     AddErrors(result);
                 }
             }

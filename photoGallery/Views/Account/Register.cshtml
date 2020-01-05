@@ -5,6 +5,8 @@
 
 <h2>@ViewBag.Title.</h2>
 
+@Html.Raw("<strong><font color='red'>" + TempData["Message"] + "</font></strong>")
+
 @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
