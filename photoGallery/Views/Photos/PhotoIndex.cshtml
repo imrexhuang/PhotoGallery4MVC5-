@@ -1,9 +1,26 @@
 ﻿@model IEnumerable<photoGallery.Models.Photo>
 
 @{
-//    ViewBag.Title = "Index";
+    //    ViewBag.Title = "Index";
+    int _albamId = (int) ViewData["AlbumId"];
+
 }
 
+
+
+@using (Html.BeginForm("filterPhotobytitle", "Photos", FormMethod.Get, new { role = "search", @class = "form-inline" }))
+{
+    //<!-- 產生出來的HTML會是<form action="/Photos" class="form-inline" method="get" role="search"> -->
+
+    <div class="input-group">
+        <span class="input-group-btn">
+            @Html.Hidden("albamId", _albamId)
+            @Html.TextBox("qkeyword")
+            <button class="btn btn-default" type="submit"><i class="fa fa-search"></i> Search by photo title</button>
+        </span>
+    </div>
+
+}
 
 <p>
     @*@photoGallery.Utility.Utility4photoGallery.bootstrapActionLink(null, "Add Photo", "Add Photo", "Create", "Photos", "glyphicon-plus", null, null)*@

@@ -17,18 +17,28 @@ namespace photoGallery.Controllers
         private GalleryContext db = new GalleryContext();
 
         // GET: Photos
-         [HandleError]
+        [HandleError]
         public ActionResult Index()
-        {                      
+        {
             var photos = db.Photos.Include(p => p.Album);
             return View(photos.ToList());
         }
-        
+
         public ActionResult filterPhoto(int albamId) 
         {
             var photos = db.Photos.Include(p => p.Album);
             photos = photos.Where(c => c.AlbumId == albamId);
+            ViewData["AlbumId"] = albamId;
             return View("PhotoIndex",photos.ToList());
+        }
+
+        public ActionResult filterPhotobytitle(int albamId, String qkeyword)
+        {
+            var photos = db.Photos.Include(p => p.Album);
+            photos = photos.Where(c => c.AlbumId == albamId);
+            photos = photos.Where(c => c.Title.Contains(qkeyword));
+            ViewData["AlbumId"] = albamId;
+            return View("PhotoIndex", photos.ToList());
         }
 
         [Authorize(Roles = "Admin,User")]
